@@ -18,10 +18,20 @@ class UserTask < ApplicationRecord
             allow_nil: true
   validates :documents,
             content_type: {
-              in: Settings.user_task.allowed_document_types
+              in: Settings.user_task.allowed_document_types,
+              message: I18n.t(
+                "activerecord.errors.models.user_task.attributes.
+                documents.invalid_document_type",
+                types: Settings.user_task.allowed_document_types.join(", ")
+              )
             },
             size: {
-              less_than: Settings.user_task.max_document_size.megabytes
+              less_than: Settings.user_task.max_document_size.megabytes,
+              message: I18n.t(
+                "activerecord.errors.models.user_task
+                .attributes.documents.size_exceeded",
+                size: Settings.user_task.max_document_size.megabytes
+              )
             }
 
   # Scopes
